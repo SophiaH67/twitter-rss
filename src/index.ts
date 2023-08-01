@@ -18,7 +18,7 @@ scraper.login(
 
 app.get("/:twitter.xml", async (req: Request, res: Response) => {
   const accountName = req.params.twitter;
-  const tweets = scraper.getTweets(accountName);
+  const tweets = scraper.getTweets(accountName, 20);
 
   const feed = new RSS({
     title: `Twitter Feed for ${accountName}`,
