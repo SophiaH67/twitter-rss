@@ -3,8 +3,18 @@ import RSS from "rss";
 import { Scraper, Tweet } from "@the-convocation/twitter-scraper";
 
 const scraper = new Scraper();
-
 const app = express();
+
+if (!process.env.TWITTER_USERNAME || !process.env.TWITTER_PASSWORD) {
+  console.error("TWITTER_USERNAME and TWITTER_PASSWORD must be set");
+  process.exit(1);
+}
+
+scraper.login(
+  process.env.TWITTER_USERNAME,
+  process.env.TWITTER_PASSWORD,
+  process.env.TWITTER_EMAIL
+);
 
 app.get("/:twitter.xml", async (req: Request, res: Response) => {
   const accountName = req.params.twitter;
@@ -24,7 +34,7 @@ app.get("/:twitter.xml", async (req: Request, res: Response) => {
         author: tweet.username,
         guid: tweet.id,
         url: `https://twitter.com/${accountName}/status/${tweet.id}`,
-        date: new Date(tweet.timestamp!),
+        date: new Date(tweet.timestamp! * 1000),
       });
     }
   } catch (e) {
