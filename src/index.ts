@@ -28,7 +28,7 @@ app.get("/:twitter.xml", async (req: Request, res: Response) => {
 
   try {
     for await (const tweet of tweets) {
-      const a = feed.item({
+      feed.item({
         title: tweet.permanentUrl!,
         description: tweet.text!,
         author: tweet.username,
